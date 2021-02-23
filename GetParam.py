@@ -1,14 +1,16 @@
 
 import random
+import os
+from os import path
 """
 Hyperparameter
 """
-COVERAGE = 200
-POPSIZE = 200
-MAX_POPSIZE = 300
-PROP =  0.4
+COVERAGE = 100
+POPSIZE = 1000
+MAX_POPSIZE = 1200
+PROP =  0.05
 PC = 0.95
-PM = 0.1
+PM = 0.5
 
 INFINITE = 100000000
 class Param():
@@ -17,6 +19,7 @@ class Param():
         self.N = self.D = self.s = self.t = -1
         self.best = INFINITE
     def buildGraph(self, path):
+        self.best = INFINITE
         with open(path) as f:
             l1 = f.readline()
             self.N, self.D = (int(i) for i in l1.split(" "))
@@ -48,19 +51,29 @@ class Param():
                 w = modify[key]
                 self.G[u][d].append((w,v))
             return self.G
-if __name__ == "__main__":
-    TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
-    t = Param()
-    t.buildGraph(TEST_PATH)
-    r = set()
-    kkk = 0
-    for u in range(t.N):
-        for i in range(t.D):
-            for aa in t.G[u][i]: 
-                w,d = aa
-                if w < 46:
-                    r.add(d)
-                    kkk+= 1
-                    print (f"{u} -> {i} in domain {d} : {w}")
 
-    print(len(r), kkk)
+def getTestPath(rootFolder="IDPC-DU", testSet = ["set1", "set2"]):
+    testPath = []
+    for setName in testSet:
+        setPath = path.join(rootFolder, setName)
+        for t in os.listdir(setPath):
+            testPath.append((setName, t, path.join(setPath, t)))
+    return testPath
+
+if __name__ == "__main__":
+    # TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
+    # t = Param()
+    # t.buildGraph(TEST_PATH)
+    # r = set()
+    # kkk = 0
+    # for u in range(t.N):
+    #     for i in range(t.D):
+    #         for aa in t.G[u][i]: 
+    #             w,d = aa
+    #             if w < 46:
+    #                 r.add(d)
+    #                 kkk+= 1
+    #                 print (f"{u} -> {i} in domain {d} : {w}")
+
+    # print(len(r), kkk)
+    getTestPath()

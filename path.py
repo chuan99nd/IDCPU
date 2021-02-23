@@ -1,7 +1,7 @@
 import numpy as np
 from GetParam import Param, INFINITE, random
 from heapq import heappush, heappop
-
+SCALE = 100
 class Enviroment():
     def __init__(self, param: Param):
         self.param = param
@@ -35,7 +35,7 @@ class Enviroment():
                 return True, -INFINITE
             else:
                 self.bestCost = min(self.bestCost, self.distance[self.param.t])
-                return True, self.currMeanDistance - self.distance[self.param.t]
+                return True, self.currMeanDistance - self.distance[self.param.t]*SCALE
         self.duyetDomain[domain] = True
         ###### eval
         # push to domain
@@ -44,8 +44,8 @@ class Enviroment():
                 for w, u in self.G[v][domain]:
                     _tempDis = self.nextQueue[v] + w
                     # long time
-                    if _tempDis < self.distance[u]:
-                        heappush(self.currQueue, (_tempDis, u))
+                    # if _tempDis < self.distance[u]:
+                    heappush(self.currQueue, (_tempDis, u))
                 self.nextQueue[v] = 0
     
         ## check terminate
@@ -54,7 +54,7 @@ class Enviroment():
                 return True, -INFINITE
             else:
                 self.bestCost = min(self.bestCost, self.distance[self.param.t])
-                return True, self.currMeanDistance - self.distance[self.param.t]
+                return True, self.currMeanDistance - self.distance[self.param.t]*SCALE
         
         tmpDuyet = []
         while len(self.currQueue)>0:
@@ -67,8 +67,8 @@ class Enviroment():
             for w, u in self.G[v][domain]:
                 if not self.duyetDinh[u]:
                     heappush(self.currQueue,(d_v+w, u))
-            if d_v < self.bestCost: #branch and cut
-                self.nextQueue[v] = d_v
+            # if d_v < self.bestCost: #branch and cut
+            self.nextQueue[v] = d_v
         _sum = 0
         for i in tmpDuyet:
             self.duyetDinh[i] = False
@@ -93,7 +93,7 @@ class Agent():
         self.lr = 0.1
         self.discount = 0.9
         self.eps = 0.3
-        self.MAX_EPOCH = 200
+        self.MAX_EPOCH = 1000
 
     def nextAction(self):
         currColor = self.env.currColor
@@ -107,15 +107,15 @@ class Agent():
                 elif self.Qtable[currColor][c] == res[0]:
                     res.append(c)
         if len(res) ==0:
-            print("random when none")
+            # print("random when none")
             print(_duyet)
             return currColor, random.randint(0,self.D-1)
         pe = random.random()
         if pe < self.eps:
-            print("explore")
+            # print("explore")
             return currColor, _duyet[random.randint(0, len(_duyet)-1)]
         else:
-            print("learning")
+            # print("learning")
             return currColor, res[random.randint(0, len(res)-1)]
 
     def updateQ(self, node, action, reward):
@@ -131,8 +131,8 @@ class Agent():
                 _currColor, _act = self.nextAction()
                 terminated, reward = self.env.act(_act)
                 self.updateQ(_currColor, _act, reward)
-                print(f"     reward: {reward}" )
-                self.show()
+                # print(f"     reward: {reward}" )
+                # self.show()
             
             ## debug
             print(f"Epoch: {epoch} best cost " + str(self.env.bestCost))
@@ -145,8 +145,8 @@ class Agent():
             _currColor, _act = self.nextAction()
             terminated, reward = self.env.act(_act)
             self.updateQ(_currColor, _act, reward)
-            print(f"     reward: {reward}" )
-            self.show()  
+            # print(f"     reward: {reward}" )
+            # self.show()  
         ## debug
         print(f"Best cost " + str(self.env.bestCost))
 
@@ -157,10 +157,11 @@ class Agent():
         print("     Current mean distance: " + str(self.env.currMeanDistance))
         print("++++++++++++++++++++++++++++")
         print(self.Qtable)
+
 if __name__=="__main__":
     print("Begin debug --------------------------------------------")
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
-    # TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
     p = Param()
     p.buildGraph(TEST_PATH)
     env = Enviroment(p)

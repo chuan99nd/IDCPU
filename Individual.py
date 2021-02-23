@@ -109,6 +109,8 @@ if __name__ == "__main__":
     # TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_20x20x8000.idpc"
 
     t = Param()
     t.buildGraph(TEST_PATH)
@@ -119,15 +121,19 @@ if __name__ == "__main__":
     per = permutations(ll)
     res = float('inf')
     iii = 0
-    # for gene in per:
-    #     i = Individual(t)
-    #     i.genes = gene
-    #     print(i.fake())
-    #     iii += 1
-    #     if iii%10000==0:
-    #         print(f'{iii}/{res}')
-    i = Individual(t)
-    res, trace = i.fake()
-    i.processTrace(trace, i.param.s, i.param.t)
+    for gene in per:
+        i = Individual(t)
+        i.genes = gene
+        # print(i.eval())]
+        if i.eval()==7:
+            print(gene)
+        res = min(res, i.eval())
+        iii += 1
+        if iii%10000==0:
+            print(f'{iii}/{res}')
+            # print(gene)
+    # i = Individual(t)
+    # res, trace = i.fake()
+    # i.processTrace(trace, i.param.s, i.param.t)
     print(res)
 
