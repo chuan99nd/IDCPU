@@ -87,10 +87,10 @@ if __name__=="__main__":
     print()
     print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
-    # TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
-    TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
-    TEST_PATH = "IDPC-DU\\set1\\idpc_15x7x1504.idpc"
-    TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
+    # TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
+    # TEST_PATH = "IDPC-DU\\set1\\idpc_15x7x1504.idpc"
+    # TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"
     p = Param()
     p.buildGraph(TEST_PATH)
     ####
@@ -104,5 +104,5 @@ if __name__=="__main__":
 
 
     gr = GreedyRandom(p)
-    for i in range(10000):
+    for i in range(100):
         print("Epoch " + str(i) + " value : " + str(gr.run(show=False)))

@@ -114,8 +114,8 @@ if __name__ == "__main__":
     #         print(f'{iii}/{res}')
     i = Individual(t)
     i.genes = [4,0,3,2,1]
-    # res, trace = i.fake()
-    # i.processTrace(trace, i.param.s, i.param.t)
-    res = i.eval()
+    res, trace = i.fake()
+    i.processTrace(trace, i.param.s, i.param.t)
+    # res = i.eval()
     print(res)
 

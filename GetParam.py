@@ -6,11 +6,11 @@ from os import path
 Hyperparameter
 """
 COVERAGE = 100
-POPSIZE = 1000
+POPSIZE = 500
 MAX_POPSIZE = 1200
 PROP =  0.05
 PC = 0.95
-PM = 0.5
+PM = 0.1
 
 INFINITE = 100000000
 class Param():

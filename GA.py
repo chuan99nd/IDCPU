@@ -24,7 +24,11 @@ class GA():
         i2 = random.randint(0, self.D-1)
         while(i2==i1):
             i2 = random.randint(0, self.D-1)
-        ind.genes[i1], ind.genes[i2] = ind.genes[i2], ind.genes[i1]
+        # ind.genes[i1], ind.genes[i2] = ind.genes[i2], ind.genes[i1]
+        if i1 > i2:
+            i1, i2 = i2, i1
+        # print(i1, i2)
+        np.flip(ind.genes[i1:i2+1])
         ind.eval()
         return ind
     
@@ -87,15 +91,15 @@ class GA():
                 # print(len(newPop))
             self.pop = newPop
             if show:
-                print("Generation " + str(generation) + " : " + str(self.pop[0].eval()))
+                print("Generation " + str(generation) + " : " + str(self.pop[-1].eval()))
                 # print(self.pop[0].kount)
                 # for indddd in self.pop:
                 #     indddd.show()
                 # print([iii.eval() for iii in self.pop] )
         return self.pop[0].eval()
 if __name__ == "__main__":
-    # TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
-    # TEST_PATH = "IDPC-DU\\set1\\idpc_35x17x13934.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_35x17x13934.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"
     # TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
     # TEST_PATH = "IDPC-DU\\set1\\idpc_25x25x15625.idpc"
@@ -123,6 +127,8 @@ if __name__ == "__main__":
         p2 = Individual(t)
         p2.init()
         c1, c2 = ga.crossover(p1,p2)
+        ga.mutate(c1)
+        ga.mutate(c2)
         if c1.isValidGene():
             p1.show()
             p2.show()
