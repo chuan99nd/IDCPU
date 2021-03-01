@@ -2,22 +2,26 @@
 import random
 import os
 from os import path
+import numpy as np
 """
 Hyperparameter
 """
 COVERAGE = 100
 POPSIZE = 500
 MAX_POPSIZE = 1200
-PROP =  0.05
+PROP =  0.6
 PC = 0.95
 PM = 0.1
-
+PROBABILITY = 4
+# Montercarlo tree
+C = 0.1
 INFINITE = 100000000
 class Param():
     def __init__(self):
         self.G = []
         self.N = self.D = self.s = self.t = -1
         self.best = INFINITE
+        self.indBest = None
     def buildGraph(self, path):
         self.best = INFINITE
         with open(path) as f:

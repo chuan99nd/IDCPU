@@ -1,6 +1,7 @@
 from GetParam import Param, random, INFINITE
 from heapq import heappush, heappop
 from queue import PriorityQueue
+from Node import Node
 import numpy as np
 import time
 class Individual():
@@ -32,7 +33,7 @@ class Individual():
 
         currQueue = list()
         currColorIndex = 0
-        heappush(currQueue,(0, self.param.s))
+        
         while len(currQueue) > 0 and currColorIndex < self.param.D:
             tmpDuyet = []
             nextQueue = []
