@@ -25,8 +25,12 @@ class GA():
         self.pop = []
         self.parrent = parrent
         #set prob for gene
+        self.prob = [1/(i+PROBABILITY) for i in range(len(self.chuaDuyet))]
+        _sum = sum(self.prob)
+        self.prob = [i/_sum for i in self.prob]
         self.genSize = len(self.chuaDuyet)
     def init(self):
+        self.parrent.minDis = INFINITE
         for d in self.chuaDuyet:
             ind = Individual(self.parrentDistance, self.chuaDuyet, self.param, self.fromParrentVertice)
             ind.init(d)
@@ -34,6 +38,7 @@ class GA():
             _node = Node(d, self.parrent, self.param)
             _node.n = 1
             _node.currDistance, _node.currVertice, _node.minDis = ind.getNodeInfo(self.parrent)
+            self.parrent.minDis = min(self.parrent.minDis, _node.minDis)
             self.parrent.Q = max(-ind.eval(None), self.parrent.Q)
             self.pop.append(ind)
             self.parrent.childs[d] = _node
@@ -109,7 +114,10 @@ class GA():
                 #     indddd.show()
                 # print([iii.eval() for iii in self.pop] )
         return self.pop[0].eval(None)
-
+    def branchAndCut(self):
+        for d in self.chuaDuyet:
+            if self.parrent.childs[d].minDis >= self.param.best:
+                del self.parrent.childs[d]
 if __name__ =="__main__":
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"

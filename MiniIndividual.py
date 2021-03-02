@@ -107,6 +107,7 @@ if __name__ == "__main__":
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"
     # TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_20x20x8000.idpc"
     t = Param()
     t.buildGraph(TEST_PATH)
 

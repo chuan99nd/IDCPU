@@ -6,16 +6,17 @@ import numpy as np
 """
 Hyperparameter
 """
-COVERAGE = 50
+COVERAGE = 30
 POPSIZE = 100
-PROP =  0.6
+PROP =  0.7
 PC = 0.95
 PM = 0.4
-PROBABILITY = 4
+PROBABILITY = 3
 
 # Montercarlo tree
-C = 0.1
-BIAS = 100
+K = 2
+C = 0.5
+BIAS = 1
 INFINITE = 100000000
 class Param():
     def __init__(self):

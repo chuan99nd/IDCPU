@@ -1,4 +1,4 @@
-from GetParam import Param, INFINITE, random,C, BIAS
+from GetParam import Param, INFINITE, random,C, BIAS, K
 from MiniIndividual import Individual
 from GetParam import np
 from MiniGa import  GA
@@ -6,7 +6,8 @@ from Node import Node
 from queue import heappop, heappush
 import math
 class MontecarloTreeSearch():
-    def __init__(self, path):      
+    def __init__(self, path):
+        random.seed(0)  
         self.param = Param()
         self.param.buildGraph(path)
         self.N = self.param.N
@@ -23,11 +24,15 @@ class MontecarloTreeSearch():
         _root.minQ = -INFINITE
         self.root = _root
         # nammoadidaphat
-    def UCT1(self, parrent:Node, child: Node, Qstd, Qmean):
+    def UCT1(self, parrent:Node, child: Node, Qstd, Qmean, Hstd, Hmean):
+        if Hstd == 0:
+            Hstd = INFINITE
         if parrent.maxQ == parrent.minQ:
-            return np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS))
+            return np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS)) - K*(child.minDis-Hmean)/Hstd
+            # return  - K*(child.minDis-Hmean)/Hstd
 
-        return (child.Q-Qmean)/Qstd + C*np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS))
+        # return (child.Q-Qmean)/Qstd + C*np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS))# - K*child.minDis/self.param.best
+        return  (child.Q-Qmean)/Qstd + C*np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS)) - K*(child.minDis-Hmean)/Hstd
 
     def getStat(self, Qlist:list):
         _n = len(Qlist)
@@ -43,14 +48,17 @@ class MontecarloTreeSearch():
             _bestNode = None
             _bestValue = -INFINITE
             Qlist = []
+            Hlist = []
             for domain in _currNode.childs:
                 if not _currNode.childs[domain].isTerminal:
                     Qlist.append(_currNode.childs[domain].Q)
+                    Hlist.append(_currNode.childs[domain].minDis)
             # print("Qlist: " +str(Qlist))
-            _mean, _std = self.getStat(Qlist)
+            _Qmean, _Qstd = self.getStat(Qlist)
+            _Hmean, _Hstd = self.getStat(Hlist)
             for domain in _currNode.childs:
                 if not _currNode.childs[domain].isTerminal:
-                    _temp = self.UCT1(_currNode, _currNode.childs[domain], _std, _mean)
+                    _temp = self.UCT1(_currNode, _currNode.childs[domain], _Qstd, _Qmean, _Hmean, _Hstd)
                     if _temp > _bestValue:
                         _bestValue = _temp
                         _bestNode = _currNode.childs[domain]
@@ -99,6 +107,7 @@ class MontecarloTreeSearch():
         ga.init() # add child node to curr
         #Simulation
         ga.run()
+        ga.branchAndCut()
     
     def backpropagation(self, curr: Node, addN):
         # update Q, N, terminate, minDis, minQ, maxQ
@@ -108,39 +117,46 @@ class MontecarloTreeSearch():
         _min = INFINITE
         _max = -INFINITE
         _Q = -INFINITE
+        _minDis = INFINITE
         for _d in curr.childs:
             curr.Q = max(curr.Q, curr.childs[_d].Q)
             _min = min(_min, curr.childs[_d].Q)
             _max = max(_max, curr.childs[_d].Q)
+            _minDis = min(_minDis, curr.childs[_d].minDis)
         curr.minQ = _min
         curr.maxQ = _max
+        curr.minDis = _minDis
         _par = curr.par
         curr.n += addN
         if curr.checkTerminate():
             _d = curr.d
             if _par!=None:
                 del _par.childs[_d]
+                _par.Q = -INFINITE
                 for _d in _par.childs:
                     _par.Q = max(_par.Q, _par.childs[_d].Q)
-                    # _par.minDis = min(_par.minDis, _par.childs[_d].minDis)
         self.backpropagation(_par, addN)
     def run(self, STEP):
         for step in range(STEP):
-            print(f"STEP {step}")
+            # print(f"STEP {step}")
             currNode = self.selection()
-            print(currNode.domainTravered)
+            # print(currNode.domainTravered)
             # self.root.showChilds()
             # _bestValue = - INFINITE
             # _bestNode = None
             # Qlist = []
+            # Hlist = []
             # for domain in self.root.childs:
             #     if not self.root.childs[domain].isTerminal:
             #         Qlist.append(self.root.childs[domain].Q)
+            #         Hlist.append(self.root.childs[domain].minDis)
             # if len(Qlist)>0:
-            #     _mean, _std = self.getStat(Qlist)
+            #     _Qmean, _Qstd = self.getStat(Qlist)
+            #     _Hmean, _Hstd = self.getStat(Hlist)
             #     for domain in self.root.childs:
             #         if not self.root.childs[domain].isTerminal:
-            #             _temp = self.UCT1(self.root, self.root.childs[domain], _std, _mean)
+            #             # _temp = self.UCT1(self.root, self.root.childs[domain], _std, _mean)
+            #             _temp = self.UCT1(self.root, self.root.childs[domain], _Qstd, _Qmean, _Hmean, _Hstd)
             #             self.root.childs[domain].show()
             #             print("----Utc: "+ str(_temp))
             #             if _temp > _bestValue:
@@ -157,9 +173,10 @@ class MontecarloTreeSearch():
 if __name__ =="__main__":
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"
-    TEST_PATH = "IDPC-DU\\set2\\idpc_100x200x2296097.idpc"
-    TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"  # hard tesst
+    # TEST_PATH = "IDPC-DU\\set2\\idpc_100x200x2296097.idpc"
+    # TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"  # hard tesst
+    # TEST_PATH = "IDPC-DU\\set1\\idpc_20x20x8000.idpc"
     import sys
     # sys.stdout = open("output.txt", "w")
     tree = MontecarloTreeSearch(TEST_PATH)
-    print(tree.run(20000))
+    print(tree.run(1000))
