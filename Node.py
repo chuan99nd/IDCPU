@@ -1,9 +1,8 @@
 from GetParam import Param, INFINITE, random, COVERAGE, POPSIZE, PC, PM, PROBABILITY, PROP
-from MiniIndividual import Individual
-from GetParam import numpy as np
+from GetParam import np
 
 class Node():
-    def __init__(self, d, par: Node, param:Param):
+    def __init__(self, d, par, param:Param):
         self.d = d
         self.Q = -INFINITE
         self.minQ = None
@@ -13,7 +12,8 @@ class Node():
         self.minDis = None
         self.currDistance = None  # (N,) distance from s to v in colorpath of node
         self.currVertice = None  # v TRue false if xet cac dinh ke vs v
-        self.domainTravered = None # array cac domain da duyet
+        if par!= None:
+            self.domainTravered = np.append(par.domainTravered, d) # array cac domain da duyet
         self.isTerminal = False
         self.param = param
 
@@ -24,3 +24,11 @@ class Node():
             if self.minDis >= self.param.best or len(self.childs)==0:
                 self.isTerminal = True
         return self.isTerminal
+    
+    def show(self):
+        print("--Color: "+str(self.domainTravered)+ " Q value: "+ str(self.Q) + " minDis: " + str(self.minDis) + " N: "+ str(self.n))
+    
+    def showChilds(self):
+        print("Child node of "+ str(self.domainTravered))
+        for d in self.childs:
+            self.childs[d].show()

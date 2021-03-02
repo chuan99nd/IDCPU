@@ -6,15 +6,16 @@ import numpy as np
 """
 Hyperparameter
 """
-COVERAGE = 100
-POPSIZE = 500
-MAX_POPSIZE = 1200
+COVERAGE = 50
+POPSIZE = 100
 PROP =  0.6
 PC = 0.95
-PM = 0.1
+PM = 0.4
 PROBABILITY = 4
+
 # Montercarlo tree
 C = 0.1
+BIAS = 100
 INFINITE = 100000000
 class Param():
     def __init__(self):
@@ -65,19 +66,18 @@ def getTestPath(rootFolder="IDPC-DU", testSet = ["set1", "set2"]):
     return testPath
 
 if __name__ == "__main__":
-    # TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
-    # t = Param()
-    # t.buildGraph(TEST_PATH)
-    # r = set()
-    # kkk = 0
-    # for u in range(t.N):
-    #     for i in range(t.D):
-    #         for aa in t.G[u][i]: 
-    #             w,d = aa
-    #             if w < 46:
-    #                 r.add(d)
-    #                 kkk+= 1
-    #                 print (f"{u} -> {i} in domain {d} : {w}")
+    TEST_PATH = "IDPC-DU\\set1\\idpc_45x22x43769.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"  # hard tesst
+    t = Param()
+    t.buildGraph(TEST_PATH)
+    r = set()
+    kkk = 0
+    for u in range(t.N):
+        for i in range(t.D):
+            for aa in t.G[u][i]: 
+                w,v = aa
+                if w < 46:
+                    print (f"{u} -> {v} in domain {i} : {w}")
 
     # print(len(r), kkk)
-    getTestPath()
+    # getTestPath()
