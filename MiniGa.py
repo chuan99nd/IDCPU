@@ -91,6 +91,8 @@ class GA():
         return child1, child2
 
     def run(self, show = False):
+        if self.genSize <= 1:
+            return self.pop[0].eval(None)
         for generation in range(COVERAGE):
             self.pop.sort(key=compare)
             newPop = self.pop[0:int(POPSIZE*PROP)]

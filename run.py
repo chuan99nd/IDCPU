@@ -1,5 +1,4 @@
 from GetParam import *
-from GA import *
 import time
 import pandas as pd
 from MontecarloTreeSearch import MontecarloTreeSearch
@@ -12,7 +11,7 @@ data =  {
         "time": []
     }
 f = open("result.txt","w+")
-for setName, fileName, filePath in getTestPath():
+for setName, fileName, filePath in getTestPath(testSet=["set2"]):
     print(fileName)
     startTime = time.time()
     t = MontecarloTreeSearch(filePath)
@@ -29,6 +28,7 @@ for setName, fileName, filePath in getTestPath():
     data["cost"].append(best)
     data["time"].append(int(endTime-startTime))
     f.write(str(row) + "\n")
+    print(row)
 
 df = pd.DataFrame(data)
 print(df)

@@ -117,7 +117,9 @@ if __name__ == "__main__":
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_20x20x8000.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"
-
+    TEST_PATH = "IDPC-DU\\set1\\idpc_30x15x10025.idpc"
+    TEST_PATH = "IDPC-DU\\set1\\idpc_30x30x27000.idpc"
+    TEST_PATH = "IDPC-DU\\set2\\idpc_100x100x1000000.idpc"
     t = Param()
     t.buildGraph(TEST_PATH)
     from itertools import permutations

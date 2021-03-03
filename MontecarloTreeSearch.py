@@ -138,30 +138,30 @@ class MontecarloTreeSearch():
         self.backpropagation(_par, addN)
     def run(self, STEP):
         for step in range(STEP):
-            # print(f"STEP {step}")
+            print(f"STEP {step}")
             currNode = self.selection()
             # print(currNode.domainTravered)
             # self.root.showChilds()
-            # _bestValue = - INFINITE
-            # _bestNode = None
-            # Qlist = []
-            # Hlist = []
-            # for domain in self.root.childs:
-            #     if not self.root.childs[domain].isTerminal:
-            #         Qlist.append(self.root.childs[domain].Q)
-            #         Hlist.append(self.root.childs[domain].minDis)
-            # if len(Qlist)>0:
-            #     _Qmean, _Qstd = self.getStat(Qlist)
-            #     _Hmean, _Hstd = self.getStat(Hlist)
-            #     for domain in self.root.childs:
-            #         if not self.root.childs[domain].isTerminal:
-            #             # _temp = self.UCT1(self.root, self.root.childs[domain], _std, _mean)
-            #             _temp = self.UCT1(self.root, self.root.childs[domain], _Qstd, _Qmean, _Hmean, _Hstd)
-            #             self.root.childs[domain].show()
-            #             print("----Utc: "+ str(_temp))
-            #             if _temp > _bestValue:
-            #                 _bestValue = _temp
-            #                 _bestNode = self.root.childs[domain]
+            _bestValue = - INFINITE
+            _bestNode = None
+            Qlist = []
+            Hlist = []
+            for domain in self.root.childs:
+                if not self.root.childs[domain].isTerminal:
+                    Qlist.append(self.root.childs[domain].Q)
+                    Hlist.append(self.root.childs[domain].minDis)
+            if len(Qlist)>0:
+                _Qmean, _Qstd = self.getStat(Qlist)
+                _Hmean, _Hstd = self.getStat(Hlist)
+                for domain in self.root.childs:
+                    if not self.root.childs[domain].isTerminal:
+                        # _temp = self.UCT1(self.root, self.root.childs[domain], _std, _mean)
+                        _temp = self.UCT1(self.root, self.root.childs[domain], _Qstd, _Qmean, _Hmean, _Hstd)
+                        self.root.childs[domain].show()
+                        print("----Utc: "+ str(_temp))
+                        if _temp > _bestValue:
+                            _bestValue = _temp
+                            _bestNode = self.root.childs[domain]
     
             # if _bestNode!=None:
             #     _bestNode.show()
@@ -173,6 +173,7 @@ class MontecarloTreeSearch():
 if __name__ =="__main__":
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"
+    TEST_PATH = "IDPC-DU\\set2\\idpc_100x100x1000000.idpc"
     # TEST_PATH = "IDPC-DU\\set2\\idpc_100x200x2296097.idpc"
     # TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"  # hard tesst
     # TEST_PATH = "IDPC-DU\\set1\\idpc_20x20x8000.idpc"
