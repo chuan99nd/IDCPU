@@ -2,6 +2,7 @@
 import random
 import os
 from os import path
+import numpy as np
 """
 Hyperparameter
 """
@@ -10,7 +11,7 @@ POPSIZE = 500
 MAX_POPSIZE = 1200
 PROP =  0.05
 PC = 0.95
-PM = 0.1
+PM = 0.3
 
 INFINITE = 100000000
 class Param():

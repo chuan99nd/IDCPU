@@ -1,7 +1,6 @@
-from GetParam import Param, random, INFINITE
+from GetParam import Param, random, INFINITE, np
 from heapq import heappush, heappop
 from queue import PriorityQueue
-import numpy as np
 import time
 class Individual():
     def __init__(self, param: Param):

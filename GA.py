@@ -1,8 +1,7 @@
-from GetParam import Param, random
+from GetParam import Param, random, np
 from GetParam import (COVERAGE, MAX_POPSIZE,PROP,
                       PM, PC, POPSIZE)
 from Individual import Individual
-import numpy as np
 
 def compare(ind: Individual):
     return ind.eval()
@@ -69,7 +68,9 @@ class GA():
         child1.eval(), child2.eval()
         return child1, child2
                 
-    def run(self, show=True):
+    def run(self, show=True, testName= None, fileResult=None):
+        if fileResult:
+            fileResult.write("Generations "+ testName +"\n")
         self.init()
         for generation in range(COVERAGE):
             self.pop.sort(key=compare)
@@ -96,7 +97,12 @@ class GA():
                 # for indddd in self.pop:
                 #     indddd.show()
                 # print([iii.eval() for iii in self.pop] )
+            if fileResult:
+                fileResult.write((str(generation) + " " + str(self.pop[0].eval()) + "\n"))
         return self.pop[0].eval()
+    
+    def getRand(self):
+        return (np.random.randint(100, size=1), random.randint(0,1000))
 if __name__ == "__main__":
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
     TEST_PATH = "IDPC-DU\\set1\\idpc_35x17x13934.idpc"

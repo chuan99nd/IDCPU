@@ -11,7 +11,6 @@ class GreedyRandom():
         self.t = param.t
         self.G = param.G
         random.seed(0)
-
     def run(self, show = False):
         _currDis = np.full((self.N,), INFINITE)
         _currDis[self.s] = 0
