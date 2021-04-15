@@ -6,13 +6,13 @@ import numpy as np
 """
 Hyperparameter
 """
-COVERAGE = 30
+COVERAGE = 20
 POPSIZE = 100
-PROP =  0.7
+PROP =  0.1
 PC = 0.95
 PM = 0.4
 PROBABILITY = 3
-
+STEP = 250
 # Montercarlo tree
 K = 2
 C = 0.5
