@@ -136,19 +136,45 @@ class MontecarloTreeSearch():
                 for _d in _par.childs:
                     _par.Q = max(_par.Q, _par.childs[_d].Q)
         self.backpropagation(_par, addN)
-    def run(self, STEP):
+    def run(self, STEP, testName = None, fileResult=None):
+        if fileResult:
+            fileResult.write("Steps "+ testName +"\n")
+        depth = 0
+        _maxDepth = 0
         for step in range(STEP):
             # print(f"STEP {step}")
             currNode = self.selection()
+            _maxDepth = max(_maxDepth, depth)
+            depth = len(currNode.domainTravered) or _maxDepth
             # print(currNode.domainTravered)
             # self.root.showChilds()
-            
-  
+            # _bestValue = - INFINITE
+            # _bestNode = None
+            # Qlist = []
+            # Hlist = []
+            # for domain in self.root.childs:
+            #     if not self.root.childs[domain].isTerminal:
+            #         Qlist.append(self.root.childs[domain].Q)
+            #         Hlist.append(self.root.childs[domain].minDis)
+            # if len(Qlist)>0:
+            #     _Qmean, _Qstd = self.getStat(Qlist)
+            #     _Hmean, _Hstd = self.getStat(Hlist)
+            #     for domain in self.root.childs:
+            #         if not self.root.childs[domain].isTerminal:
+            #             # _temp = self.UCT1(self.root, self.root.childs[domain], _std, _mean)
+            #             _temp = self.UCT1(self.root, self.root.childs[domain], _Qstd, _Qmean, _Hmean, _Hstd)
+            #             self.root.childs[domain].show()
+            #             print("----Utc: "+ str(_temp))
+            #             if _temp > _bestValue:
+            #                 _bestValue = _temp
+            #                 _bestNode = self.root.childs[domain]
+    
             # if _bestNode!=None:
             #     _bestNode.show()
             self.expandAndSimulation(currNode)
             _addN = len(currNode.childs)
             self.backpropagation(currNode, _addN)
+            fileResult.write(str(step) + " " + str(self.param.best) + " " + str(depth) + "\n")
         return self.param.best
     
 if __name__ =="__main__":
