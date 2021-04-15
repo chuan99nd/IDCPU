@@ -10,8 +10,9 @@ data =  {
         "cost":[],
         "time": []
     }
-f = open("result.txt","w+")
+
 for setName, fileName, filePath in getTestPath(testSet=["set2"]):
+    f = open("result.txt","w+")
     print(fileName)
     startTime = time.time()
     t = MontecarloTreeSearch(filePath)
@@ -28,6 +29,7 @@ for setName, fileName, filePath in getTestPath(testSet=["set2"]):
     data["cost"].append(best)
     data["time"].append(int(endTime-startTime))
     f.write(str(row) + "\n")
+    f.close()
     print(row)
 
 df = pd.DataFrame(data)
