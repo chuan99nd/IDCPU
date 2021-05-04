@@ -136,10 +136,16 @@ class MontecarloTreeSearch():
                 for _d in _par.childs:
                     _par.Q = max(_par.Q, _par.childs[_d].Q)
         self.backpropagation(_par, addN)
-    def run(self, STEP):
+    def run(self, STEP, testName = None, fileResult=None):
+        if fileResult:
+            fileResult.write("Steps "+ testName +"\n")
+        depth = 0
+        _maxDepth = 0
         for step in range(STEP):
-            print(f"STEP {step}")
+            # print(f"STEP {step}")
             currNode = self.selection()
+            _maxDepth = max(_maxDepth, depth)
+            depth = len(currNode.domainTravered) or _maxDepth
             # print(currNode.domainTravered)
             # self.root.showChilds()
             # _bestValue = - INFINITE
@@ -168,6 +174,7 @@ class MontecarloTreeSearch():
             self.expandAndSimulation(currNode)
             _addN = len(currNode.childs)
             self.backpropagation(currNode, _addN)
+            fileResult.write(str(step) + " " + str(self.param.best) + " " + str(depth) + "\n")
         return self.param.best
     
 if __name__ =="__main__":
