@@ -3,6 +3,24 @@ import random
 import os
 from os import path
 import numpy as np
+<<<<<<< HEAD
+=======
+"""
+Hyperparameter
+"""
+COVERAGE = 20
+POPSIZE = 100
+PROP =  0.1
+PC = 0.95
+PM = 0.4
+PROBABILITY = 3
+STEP = 250
+# Montercarlo tree
+K = 2
+C = 0.5
+BIAS = 1
+INFINITE = 100000000
+>>>>>>> 4342cebe1a58d97d3a65e2e60710366fadc590c1
 class Param():
     def __init__(self):
         self.G = []
