@@ -42,7 +42,6 @@ class GA():
             self.parrent.Q = max(-ind.eval(None), self.parrent.Q)
             self.pop.append(ind)
             self.parrent.childs[d] = _node
-
     def mutate(self, ind:Individual):
         for _ in range(5):
             i1, i2 = np.random.choice(ind.geneSize, 2, p=self.prob, replace=True)
@@ -95,17 +94,12 @@ class GA():
             return self.pop[0].eval(None)
         for generation in range(COVERAGE):
             self.pop.sort(key=compare)
-            newPop = self.pop[0:int(POPSIZE*PROP)]
+            newPop = self.pop[0:1]
             while (len(newPop) < POPSIZE):
-                i1, i2 = np.random.choice(len(self.pop), 2, replace=True)
-                c1, c2 = self.crossover(self.pop[i1], self.pop[i2])
-                _prop = random.random()
-                if (_prop < PM):
-                    self.mutate(c1)
-                    self.mutate(c2)
-                c1.eval(self.parrent), c2.eval(self.parrent)
-                newPop.append(c1)
-                newPop.append(c2)
+                ind = Individual(self.parrentDistance, self.chuaDuyet, self.param, self.fromParrentVertice)
+                d = random.choice(self.chuaDuyet)
+                ind.init(d, par=self.parrent)
+                newPop.append(ind)
             self.pop = newPop
             if show:
                 print("Generation " + str(generation) + " : " + str(self.pop[0].eval(None)))

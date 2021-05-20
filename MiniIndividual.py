@@ -19,14 +19,14 @@ class Individual():
         self.isEval = False
         self.cost = INFINITE
         self.genes = np.full((self.geneSize,), -1)
-    def init(self, first):
+    def init(self, first, par = None):
         _index = np.random.permutation(self.geneSize)
         self.genes = self.chuaduyet[_index]
         for i in range(self.geneSize):
             if self.genes[i]==first:
                 self.genes[i], self.genes[0] = self.genes[0], self.genes[i]
                 break
-        self.eval(None)
+        self.eval(par)
 
     def eval(self, parrent: Node):
         if self.isEval:
@@ -75,6 +75,7 @@ class Individual():
             self.param.indBest = self
         if parrent!=None:
             parrent.childs[self.genes[0]].Q = max(-self.cost, parrent.childs[self.genes[0]].Q)
+            parrent.childs[self.genes[0]].n += 1
         return self.cost
 
     def getNodeInfo(self, parrent: Node):

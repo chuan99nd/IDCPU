@@ -174,12 +174,13 @@ class MontecarloTreeSearch():
             self.expandAndSimulation(currNode)
             _addN = len(currNode.childs)
             self.backpropagation(currNode, _addN)
-            fileResult.write(str(step) + " " + str(self.param.best) + " " + str(depth) + "\n")
+            if fileResult:
+                fileResult.write(str(step) + " " + str(self.param.best) + " " + str(depth) + "\n")
         return self.param.best
     
 if __name__ =="__main__":
     TEST_PATH = "IDPC-DU\\set1\\idpc_10x5x425.idpc"
-    TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"
+    # TEST_PATH = "IDPC-DU\\set1\\idpc_10x10x1000.idpc"
     TEST_PATH = "IDPC-DU\\set2\\idpc_100x100x1000000.idpc"
     # TEST_PATH = "IDPC-DU\\set2\\idpc_100x200x2296097.idpc"
     # TEST_PATH = "IDPC-DU\\set1\\idpc_45x90x322081.idpc"  # hard tesst
@@ -187,4 +188,4 @@ if __name__ =="__main__":
     import sys
     # sys.stdout = open("output.txt", "w")
     tree = MontecarloTreeSearch(TEST_PATH)
-    print(tree.run(1000))
+    print(tree.run(250))
