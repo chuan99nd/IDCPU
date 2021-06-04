@@ -28,11 +28,11 @@ class MontecarloTreeSearch():
         if Hstd == 0:
             Hstd = INFINITE
         if parrent.maxQ == parrent.minQ:
-            return np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS)) - K*(child.minDis-Hmean)/Hstd
+            return np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS)) #- K*(child.minDis-Hmean)/Hstd
             # return  - K*(child.minDis-Hmean)/Hstd
 
         # return (child.Q-Qmean)/Qstd + C*np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS))# - K*child.minDis/self.param.best
-        return  (child.Q-Qmean)/Qstd + C*np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS)) - K*(child.minDis-Hmean)/Hstd
+        return  child.Q + C*np.sqrt(math.log(parrent.n+BIAS)/np.sqrt(child.n+BIAS)) # - K*(child.minDis-Hmean)/Hstd
 
     def getStat(self, Qlist:list):
         _n = len(Qlist)
@@ -58,7 +58,7 @@ class MontecarloTreeSearch():
             _Hmean, _Hstd = self.getStat(Hlist)
             for domain in _currNode.childs:
                 if not _currNode.childs[domain].isTerminal:
-                    _temp = self.UCT1(_currNode, _currNode.childs[domain], _Qstd, _Qmean, _Hmean, _Hstd)
+                    _temp = self.UCT1(_currNode, _currNode.childs[domain], _Qmean, _Qstd, _Hmean, _Hstd)
                     if _temp > _bestValue:
                         _bestValue = _temp
                         _bestNode = _currNode.childs[domain]
