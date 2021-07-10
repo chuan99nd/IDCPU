@@ -7,7 +7,7 @@ import numpy as np
 Hyperparameter
 """
 COVERAGE = 20
-POPSIZE = 100
+POPSIZE = 10
 PROP =  0.1
 PC = 0.95
 PM = 0.4
