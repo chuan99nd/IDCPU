@@ -16,12 +16,12 @@ data =  {
         "time": []
     }
 f = open("result.txt","w+")
-resultRoot = "Analyst"
+resultRoot = "AnalystMC"
 shit = 0
 
-setName = "set1"
-fileName = "45x45x91125"
-filePath = "IDPC-DU\set1\idpc_45x45x91125.idpc"
+setName = "set2"
+fileName = "80x80x512000"
+filePath = "IDPC-DU\set2\idpc_80x80x512000.idpc"
 resultPath = os.path.join(resultRoot, setName, fileName)
 try:
     os.makedirs(resultPath,exist_ok = True)

@@ -9,7 +9,7 @@ class Individual():
         self.param = param
         self.G = param.G
         self.geneSize = param.D
-        self.cost = 0
+        self.cost = INFINITE
         self.genes = np.zeros((param.D,), dtype=np.int32)
         self.isEval = False
 
@@ -37,6 +37,10 @@ class Individual():
         while len(currQueue) > 0 and currColorIndex < self.param.D:
             tmpDuyet = []
             nextQueue = []
+            new_distance = np.full((self.param.N,), INFINITE, dtype=np.int64)
+            for v in currQueue:
+                new_distance[v] = distance[v]
+            distance = new_distance 
             while len(currQueue)>0:
                 d_v, v= heappop(currQueue)
                 self.kount += 1
@@ -58,8 +62,10 @@ class Individual():
             currColorIndex += 1
             for i in tmpDuyet:
                 duyet[i] = False
+            if currColorIndex > 1:
+                self.cost = min(self.cost, distance[t])
         self.isEval = True
-        self.cost = distance[self.param.t]
+        # self.cost = distance[self.param.t]
         return self.cost
 
     def fake(self):
@@ -141,7 +147,10 @@ if __name__ == "__main__":
     #         print(f'{iii}/{res}')
             # print(gene)
     i = Individual(t)
-    res, trace = i.fake()
-    i.processTrace(trace, i.param.s, i.param.t)
-    print(res)
+    i.init()
+    s = i.eval()
+    i.show()
+    print(s)
+    # i.processTrace(trace, i.param.s, i.param.t)
+    # print(res)
 

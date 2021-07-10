@@ -90,7 +90,8 @@ class GA():
             child2.genes[_id] = _val
         return child1, child2
 
-    def run(self, show = False):
+    def run(self, show = False, fileResult =None):
+        # print("hi")
         if self.genSize <= 1:
             return self.pop[0].eval(None)
         for generation in range(COVERAGE):
@@ -115,6 +116,10 @@ class GA():
                 # for indddd in self.pop:
                 #     indddd.show()
                 # print([iii.eval() for iii in self.pop] )
+            if fileResult:
+                fileResult.write(str(generation) + " " + str(self.param.best) + "\n")
+                print(str(generation) + " " + str(self.param.best))
+
         return self.pop[0].eval(None)
     def branchAndCut(self):
         for d in self.chuaDuyet:

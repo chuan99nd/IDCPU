@@ -96,7 +96,7 @@ class MontecarloTreeSearch():
                 _currNode.isTerminal = True
         return _currNode
 
-    def expandAndSimulation(self, curr: Node):
+    def expandAndSimulation(self, curr: Node, fileResult=None):
         if curr.isTerminal or curr.minDis >= self.param.best:
             # curr.show()
             # raise Exception("ngu qua")
@@ -106,7 +106,7 @@ class MontecarloTreeSearch():
                 param=self.param, parrent=curr)
         ga.init() # add child node to curr
         #Simulation
-        ga.run()
+        ga.run(fileResult=fileResult)
         ga.branchAndCut()
     
     def backpropagation(self, curr: Node, addN):
@@ -171,10 +171,10 @@ class MontecarloTreeSearch():
     
             # if _bestNode!=None:
             #     _bestNode.show()
-            self.expandAndSimulation(currNode)
+            self.expandAndSimulation(currNode, fileResult=fileResult)
             _addN = len(currNode.childs)
             self.backpropagation(currNode, _addN)
-            fileResult.write(str(step) + " " + str(self.param.best) + " " + str(depth) + "\n")
+            # fileResult.write(str(step) + " " + str(self.param.best) + " " + str(depth) + "\n")
         return self.param.best
     
 if __name__ =="__main__":
